@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!-- data-theme, class="no-anim" and the inline background are set statically
+     (not by JS) so first paint is already correct — see site-theme.css/js
+     for what no-anim suppresses and when it's lifted. -->
+<html lang="en" data-theme="dark" class="no-anim" style="background:#000">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Photon Intelligence Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700&family=Roboto+Condensed:wght@400;700&display=optional"
+      rel="stylesheet"
+    />
+    <script type="module" crossorigin src="./assets/home-D2j6XUIy.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/site-theme-B9MVS1b2.js">
+    <link rel="stylesheet" crossorigin href="./assets/site-theme-DjAdJj0V.css">
+    <link rel="stylesheet" crossorigin href="./assets/home-DS-DnF-X.css">
+  </head>
+  <body class="page-home">
+    <!-- Static header (matches publications.html/team.html/etc.): rendered
+         immediately from raw markup instead of waiting on the React bundle,
+         so it no longer pops in late on every load — see App.jsx, which no
+         longer renders its own copy of this header. -->
+    <header class="site-header" role="banner">
+      <div class="site-header-inner">
+        <a class="site-brand" href="./index.html" aria-label="Photon Intelligence Lab home">
+          <img class="site-brand-mark brand-on-dark" src="./images/brand/phi-mark-on-dark.png" alt="" aria-hidden="true"><img class="site-brand-mark brand-on-light" src="./images/brand/phi-mark-on-light.png" alt="" aria-hidden="true">
+          <span class="site-brand-copy"><strong>Photon Intelligence Lab</strong>Stony Brook University</span>
+        </a>
+        <div class="site-header-actions">
+          <nav aria-label="Primary"><ul class="site-nav-links">
+            <li><a href="./index.html" aria-current="page">Home</a></li>
+            <li><a href="./publications.html">Publications</a></li>
+            <li><a href="./team.html">Team</a></li>
+            <li><a href="./contact.html">Contact</a></li>
+          </ul></nav>
+        </div>
+      </div>
+    </header>
+    <div id="root"></div>
+  </body>
+</html>

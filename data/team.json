@@ -1,0 +1,295 @@
+{
+  "generated_at": "2026-07-12T05:38:17Z",
+  "source": "https://docs.google.com/spreadsheets/d/1_AWaXT6Pg1JpvUpT1CH3LVZLQY50Hq8oI7HIuFFpmFg/export?format=csv",
+  "members": [
+    {
+      "name": "Irene Kim",
+      "email": "irnkim@cs.stonybrook.edu",
+      "uid": "irnkim",
+      "program": "PhD",
+      "isCollaborating": false,
+      "tags": [
+        "polarization",
+        "time-of-flight",
+        "single-photon-imaging",
+        "test-time-optimization",
+        "3D-scanning"
+      ],
+      "photo": "https://drive.usercontent.google.com/download?id=1kZbna95WvUpdgJIRy00-WJ9oyVtAnMZO&export=view&authuser=0",
+      "website": "https://irnkim.github.io/",
+      "year": "2025 Fall",
+      "bio": "I am a 2nd year PhD student at Stony Brook University in the Photon Intelligence Lab, advised by Akshat Dave. My research interests span 3D vision, multisensor imaging, and computational imaging. I work at the intersection of physics-aware computer vision and multi-modal generative AI, with a focus on 3D scene understanding and vision systems under real-world complexity and challenging conditions such as extreme environments or challenging materials. My approach integrates physical cues and readings from beyond-RGB sensors with deep learning to achieve higher quality and greater generalization.",
+      "tagsByCategory": {
+        "imaging": [
+          "polarization",
+          "time-of-flight",
+          "single-photon-imaging"
+        ],
+        "machine-learning": [
+          "test-time-optimization"
+        ],
+        "application": [
+          "3D-scanning"
+        ]
+      }
+    },
+    {
+      "name": "Sai Tanmay Reddy Chakkera",
+      "email": "schakkera@cs.stonybrook.edu",
+      "uid": "schakkera",
+      "program": "PhD",
+      "isCollaborating": true,
+      "tags": [
+        "polarization",
+        "birefringence",
+        "diffusion-models",
+        "neural-rendering",
+        "stress-analysis",
+        "appearance-capture"
+      ],
+      "photo": "https://drive.usercontent.google.com/download?id=1Kc2a9Dvbx1aiL1EoNLMRYHhFeB-nEAmq&export=view&authuser=0",
+      "website": "https://starc52.net",
+      "year": "2025 Fall",
+      "bio": "I am a Computer Sciences PhD student in CV Lab at SBU, advised by Prof. DImitris Samaras. I also work with Prof. Akshat Dave. My research focus are Human Avatar Video Generation and 3D Vision, Reconstrucion, Physics based Vision.",
+      "tagsByCategory": {
+        "imaging": [
+          "polarization"
+        ],
+        "light-transport": [
+          "birefringence"
+        ],
+        "machine-learning": [
+          "diffusion-models",
+          "neural-rendering"
+        ],
+        "application": [
+          "stress-analysis",
+          "appearance-capture"
+        ]
+      }
+    },
+    {
+      "name": "Kim-Ngan (Emma) Nguyen",
+      "email": "thinguyen@cs.stonybrook.edu",
+      "uid": "thinguyen",
+      "program": "PhD",
+      "isCollaborating": false,
+      "tags": [
+        "surface-reflectance",
+        "implicit-representations",
+        "appearance-capture"
+      ],
+      "photo": "https://drive.usercontent.google.com/download?id=12qr2Owek0ZbikuFWT_ol2tt2bzSWbM0-&export=view&authuser=0",
+      "website": "https://scholar.google.com/citations?user=qTScmAwAAAAJ&hl=en",
+      "year": "2025 Winter",
+      "bio": "I am a Computer Science PhD student at Stony Brook University, advised by Prof. Akshat Dave. My research is on Appearance Capture of anisotropic media.",
+      "tagsByCategory": {
+        "light-transport": [
+          "surface-reflectance"
+        ],
+        "machine-learning": [
+          "implicit-representations"
+        ],
+        "application": [
+          "appearance-capture"
+        ]
+      }
+    },
+    {
+      "name": "Sk. Sabit Bin Mosaddek",
+      "email": "smosaddek@cs.stonybrook.edu",
+      "uid": "smosaddek",
+      "program": "PhD",
+      "isCollaborating": false,
+      "tags": [
+        "specular-reflections",
+        "3D-transformers",
+        "3D-scanning"
+      ],
+      "photo": "https://drive.usercontent.google.com/download?id=1kRPob_w3YiTF-Vx2uRnIq_cbf9RMqwTJ&export=view&authuser=0",
+      "website": "https://sa011.github.io",
+      "year": "2025 Fall",
+      "bio": "I work in 3D Computer Vision, studying how visual data can be used to reconstruct and understand the physical world. My current research focuses on specialized applications of feed-forward 3D reconstruction, developing methods that directly infer 3D structure from images.",
+      "tagsByCategory": {
+        "light-transport": [
+          "specular-reflections"
+        ],
+        "machine-learning": [
+          "3D-transformers"
+        ],
+        "application": [
+          "3D-scanning"
+        ]
+      }
+    },
+    {
+      "name": "Siddharth Singh",
+      "email": "siddsingh@cs.stonybrook.edu",
+      "uid": "siddsingh",
+      "program": "MS",
+      "isCollaborating": false,
+      "tags": [
+        "time-of-flight",
+        "volumetric-scattering",
+        "multi-bounce-scattering",
+        "imaging-around-corners",
+        "robot-perception"
+      ],
+      "photo": "https://drive.usercontent.google.com/download?id=11yjeWLnxZKXvHIHCsTr2TWJ1buGL0iC7&export=view&authuser=0",
+      "website": "https://www.linkedin.com/in/siddharths28/",
+      "year": "2025 Fall",
+      "bio": "I am an MS student in Computer Science at Stony Brook University, working on **Non-Line-of-Sight (NLOS) Imaging** and **Edge AI** in Prof. Akshat Dave’s lab (if you are indeed collaborating with him, you can edit this part). [docs.google](https://docs.google.com/forms/d/e/1FAIpQLSdM6rBf4lXQp7IS2cwNWZQ3Qhn-AlE-jmcyGtlICbrnk6ay2w/viewform?edit2=2_ABaOnud-k9noYOlKuNyXqtmLM329QfgAzyTSWkbzZTqMcQtXe0rsZsc91Nk-zjjgaw)\n\nMy research focuses on developing algorithms and systems that enable vision beyond the line of sight, such as seeing around corners or through scattering media, and deploying these capabilities efficiently on edge devices.  I am particularly interested in turning computational imaging ideas into practical, real-time systems by co-designing sensing, reconstruction, and on-device AI. [docs.google](https://docs.google.com/forms/d/e/1FAIpQLSdM6rBf4lXQp7IS2cwNWZQ3Qhn-AlE-jmcyGtlICbrnk6ay2w/viewform?edit2=2_ABaOnud-k9noYOlKuNyXqtmLM329QfgAzyTSWkbzZTqMcQtXe0rsZsc91Nk-zjjgaw)\n\nIf you tell me whether you are working with Prof. Akshat or another PI, I can tailor the first sentence exactly to what your lab expects.",
+      "tagsByCategory": {
+        "imaging": [
+          "time-of-flight"
+        ],
+        "light-transport": [
+          "volumetric-scattering",
+          "multi-bounce-scattering"
+        ],
+        "application": [
+          "imaging-around-corners",
+          "robot-perception"
+        ]
+      }
+    },
+    {
+      "name": "Sai Ram Kasanagottu",
+      "email": "skasanagottu@cs.stonybrook.edu",
+      "uid": "skasanagottu",
+      "program": "PhD",
+      "isCollaborating": false,
+      "tags": [
+        "shadows",
+        "imaging-around-corners",
+        "robot-perception"
+      ],
+      "photo": "https://drive.usercontent.google.com/download?id=1qK0E74yE22ibURjkR587B95zcKEb6Dli&export=view&authuser=0",
+      "website": "https://supersai007.github.io",
+      "year": "2025 Spring",
+      "bio": "I am a PhD student at Stony Brook University specializing in the intersection of Robotics, Computer Vision, and Computational Photography. My research focuses on Zero-Shot Mobile Manipulation using foundation models and Screw Theory to achieve geometrically precise, human-in-the-loop task execution.\nI leverage computational photography techniques—specifically Non-Line-of-Sight (NLOS) imaging and synthetic data generation—to enhance robotic perception in occluded environments. My work bridges high-level semantic reasoning with low-level physical control",
+      "tagsByCategory": {
+        "light-transport": [
+          "shadows"
+        ],
+        "application": [
+          "imaging-around-corners",
+          "robot-perception"
+        ]
+      }
+    },
+    {
+      "name": "Aditya Patel",
+      "email": "adapatel@cs.stonybrook.edu",
+      "uid": "adapatel",
+      "program": "MS",
+      "isCollaborating": false,
+      "tags": [
+        "single-photon-imaging",
+        "diffusion-models",
+        "deep-priors"
+      ],
+      "photo": "https://drive.usercontent.google.com/download?id=1kwKXPdpP-iqKFyz9tE9_lWrM7s1IZuFm&export=view&authuser=0",
+      "website": null,
+      "year": "2026 Spring",
+      "bio": "I am a Computer Science MS student in the Photonic Intelligence Lab at Stony Brook University. My research focus is reconstruction of Single Photon Camera. Currently, I am working on diffusion and optical flow estimation method for reconstruction.",
+      "tagsByCategory": {
+        "imaging": [
+          "single-photon-imaging"
+        ],
+        "machine-learning": [
+          "diffusion-models",
+          "deep-priors"
+        ]
+      }
+    },
+    {
+      "name": "Yerin Cheon",
+      "email": "ycheon@cs.stonybrook.edu",
+      "uid": "ycheon",
+      "program": "MS",
+      "isCollaborating": false,
+      "tags": [
+        "radar",
+        "multi-bounce-scattering",
+        "imaging-around-corners",
+        "robot-perception"
+      ],
+      "photo": "https://drive.usercontent.google.com/download?id=1HvCl982DLK_tDhFIRjROHxtHwSEp8EDA&export=view&authuser=0",
+      "website": null,
+      "year": "2026 Spring",
+      "bio": "I am a Master’s student in Computer Science at Stony Brook University, working with Professor Akshat Dave. My research focuses on non-line-of-sight imaging, multimodal perception, and sensor fusion for robotics and autonomous vehicles, with an emphasis on building safer and more reliable autonomous systems.",
+      "tagsByCategory": {
+        "imaging": [
+          "radar"
+        ],
+        "light-transport": [
+          "multi-bounce-scattering"
+        ],
+        "application": [
+          "imaging-around-corners",
+          "robot-perception"
+        ]
+      }
+    },
+    {
+      "name": "Mira Moukheiber",
+      "email": "mmoukheiber@cs.stonybrook.edu",
+      "uid": "mmoukheiber",
+      "program": "PhD",
+      "isCollaborating": false,
+      "tags": [
+        "diffusion-models",
+        "neural-rendering"
+      ],
+      "photo": "https://drive.google.com/drive/u/2/folders/1hIHmI5uWYbE0HFhBZGKxfZy8gXwaapxC",
+      "website": null,
+      "year": "2025 Fall",
+      "bio": "My Research focuses on intersection of Generative AI and Graphics",
+      "tagsByCategory": {
+        "machine-learning": [
+          "diffusion-models",
+          "neural-rendering"
+        ]
+      }
+    },
+    {
+      "name": "Akshat Dave",
+      "email": "dave@cs.stonybrook.edu",
+      "uid": "dave",
+      "program": "Principal Investigator",
+      "isCollaborating": false,
+      "tags": [],
+      "photo": "https://drive.usercontent.google.com/download?id=1f2-pZkSrNjY7YDkL6iF0EYxnA2FwYybh&export=view&authuser=0",
+      "website": "https://akshatdave.github.io/",
+      "year": "2025 Fall",
+      "bio": "I am a tenure-track Assistant Professor in the Department of Computer Science at Stony Brook University (SUNY) , where I lead the Photon Intelligence Lab (Φ lab). Before Stony Brook, I was a Postdoctoral Associate at MIT Media Lab with Prof. Ramesh Raskar. I received my Ph.D. from Rice University ECE Department where I was advised by Prof. Ashok Veeraraghavan. Before Rice, I obtained B.Tech. and M.Tech from Indian Institute of Technology Madras. My work has been recognized by Rice University's Best Ph.D. Thesis Award, Optica Best Paper Prize and fellowships by Texas Instruments and Qualcomm."
+    },
+    {
+      "name": "Irene Kim",
+      "email": "irnkim2@cs.stonybrook.edu",
+      "uid": "irnkim2",
+      "program": "MS",
+      "isCollaborating": true,
+      "tags": [],
+      "photo": "https://drive.usercontent.google.com/download?id=1kZbna95WvUpdgJIRy00-WJ9oyVtAnMZO&export=view&authuser=0",
+      "website": "https://irnkim.github.io/",
+      "year": "2025 Fall",
+      "bio": "I am a PhD student at Stony Brook University in the Photon Intelligence Lab, advised by Akshat Dave. My research interests span 3D vision, multisensor imaging, and computational imaging. I work at the intersection of physics-aware computer vision and multi-modal generative AI, with a focus on 3D scene understanding and vision systems under real-world complexity and challenging conditions such as extreme environments or challenging materials. My approach integrates physical cues and readings from beyond-RGB sensors with deep learning to achieve higher quality and greater generalization.",
+      "tagsByCategory": {}
+    },
+    {
+      "name": "Sai Tanmay Reddy Chakkera",
+      "email": "schakkera2@cs.stonybrook.edu",
+      "uid": "schakkera2",
+      "program": "MS",
+      "isCollaborating": true,
+      "tags": [],
+      "photo": "https://drive.usercontent.google.com/download?id=1Kc2a9Dvbx1aiL1EoNLMRYHhFeB-nEAmq&export=view&authuser=0",
+      "website": "https://starc52.net",
+      "year": "2025 Fall",
+      "bio": "I am a Computer Sciences PhD student in CV Lab at SBU, advised by Prof. DImitris Samaras. I also work with Prof. Akshat Dave. My research focus are Human Avatar Video Generation and 3D Vision, Reconstrucion, Physics based Vision.",
+      "tagsByCategory": {}
+    }
+  ]
+}

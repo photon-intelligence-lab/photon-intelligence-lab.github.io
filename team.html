@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<!-- data-theme, class="no-anim" and the inline background are set statically
+     (not by JS) so first paint is already correct — see site-theme.css/js
+     for what no-anim suppresses and when it's lifted. -->
+<html lang="en" data-theme="dark" class="no-anim" style="background:#000">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Team – Photon Intelligence Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700&family=Roboto+Condensed:wght@400;700&display=optional" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --base: 20px;
+      --name-size: 20px;
+      --year-size: 18px;
+      --tag-size: 18px;
+      --nav-text: #fff;
+      --accent: #4a90d9;
+      --dark-gray: #444;
+      --mid-gray: #888;
+      --tag-bg: #888;
+      --card-bg: #fff;
+      --page-bg: #fff;
+      --card-w: 220px;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-size: var(--base);
+      background: var(--page-bg);
+      color: #222;
+    }
+
+    /* ── NAV ── */
+    nav ul li a {
+      color: var(--nav-text);
+      text-decoration: none;
+      font-size: 0.95rem;
+      opacity: 0.85;
+      transition: opacity 0.2s;
+    }
+    nav ul li a:hover,
+    nav ul li a.active { opacity: 1; }
+
+    /* ── MAIN ── */
+    /* Derives from the shared --content-wide (site-theme.css, also enforced
+       by .page-team main there) instead of a page-local cap. */
+    main { max-width: var(--content-wide); margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+
+    h1.section-heading {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      border-bottom: 3px solid #111;
+      padding-bottom: 0.5rem;
+      color: #1a1a2e;
+    }
+
+    /* ── GRID ── */
+    /* align-items: stretch (the grid default, made explicit here) makes every
+       card-wrapper in a row match the height of the tallest card in that row;
+       card-inner/card-front then fill that stretched height at 100% below, and
+       .card-links uses margin-top:auto to pin itself to the bottom of the card
+       regardless of how many tags a member has (0 tags vs many). */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(var(--card-w), 1fr));
+      gap: 1.5rem;
+      align-items: stretch;
+    }
+
+    /* ── CARD ── */
+    .card-wrapper {
+      perspective: 1000px;
+      height: 100%;
+    }
+
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.55s;
+      transform-style: preserve-3d;
+    }
+    .card-wrapper.flipped .card-inner { transform: rotateY(180deg); }
+
+    /* front sets the height; back matches it */
+    .card-front {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 10px;
+      background: var(--card-bg);
+      padding: 1.2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: none;
+      transition: box-shadow 0.2s;
+    }
+    .card-back {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 10px;
+      background: var(--card-bg);
+      padding: 1.2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: none;
+      transition: box-shadow 0.2s;
+    }
+    .card-wrapper:hover .card-front,
+    .card-wrapper:hover .card-back {
+      box-shadow: 0 6px 22px rgba(0,0,0,0.15);
+    }
+    .card-back {
+      transform: rotateY(180deg);
+      align-items: flex-start;
+      overflow: hidden;
+    }
+
+    /* photo */
+    .card-photo-link { display: block; }
+    .card-photo {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 4px;
+      display: block;
+    }
+
+    /* name — always 2 lines tall, text anchored to bottom */
+    .card-name {
+      margin-top: 0.7rem;
+      font-size: var(--name-size);
+      font-weight: 700;
+      color: #111;
+      text-align: center;
+      width: 100%;
+      height: calc(var(--name-size) * 1.3 * 2);
+      line-height: 1.3;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* year */
+    .card-year {
+      font-size: var(--year-size);
+      color: var(--dark-gray);
+      margin-top: 0.2rem;
+      text-align: center;
+    }
+
+    /* Research tags: shared .phi-tag chips (defined in site-theme.css, same
+       design as the Publications page).
+
+       Tags wrap onto TWO rows and are clamped there, rather than sitting on
+       one horizontally-scrolling row. The old single-row version had three
+       problems: chips were sliced mid-word at the card edge, the horizontal
+       scrollbar rendered as a black bar across the white card, and a vertical
+       mouse wheel cannot drive a horizontal scroller, so the overflow was
+       effectively unreachable.
+
+       Clamping to two rows (rather than letting them wrap freely) is what
+       keeps every card the same height. Members with more tags than fit get a
+       vertical scroll — which the mouse wheel *does* drive. */
+    .card-tags {
+      margin-top: 0.4rem;
+      width: 100%;
+    }
+    .card-tags .phi-tag-row {
+      /* em here resolves against this row's own 0.72rem, matching the chips:
+         chip = 1.35 line-height + 0.56 padding = 1.91em. Two of those plus one
+         gap is an exact two-row box, so a third row can never half-peek. */
+      font-size: 0.72rem;
+      justify-content: center;
+      max-height: calc((1.91em * 2) + 0.4rem);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+    .card-tags .phi-tag { font-size: inherit; }
+
+    /* links row — always visible (not hover-gated), pinned to the bottom of
+       the card via margin-top: auto so the flexible gap lands in the tag
+       area, keeping the links row aligned across cards with 0, 1 or many
+       tags. Hover/focus is just a color accent, not a reveal. */
+    .card-links {
+      margin-top: auto;
+      padding-top: 0.5rem;
+      font-size: var(--tag-size);
+      color: var(--mid-gray);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      align-items: center;
+    }
+    .card-links a { color: var(--mid-gray); text-decoration: none; }
+    .card-links a:hover,
+    .card-links a:focus-visible { color: var(--accent); }
+    .card-links .sep { color: var(--mid-gray); }
+    .bio-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--mid-gray);
+      font-size: var(--tag-size);
+      padding: 0;
+      text-decoration: none;
+      line-height: inherit;
+      vertical-align: baseline;
+      font-family: inherit;
+      display: inline;
+      margin-bottom: -1px;
+    }
+    .bio-btn:hover,
+    .bio-btn:focus-visible { color: var(--accent); }
+    .card-links a:focus-visible,
+    .bio-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    /* back side */
+    .card-back-name {
+      font-size: var(--name-size);
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 0.6rem;
+    }
+    .card-bio-text {
+      font-size: var(--year-size);
+      color: var(--dark-gray);
+      overflow-y: auto;
+      flex: 1;
+      line-height: 1.5;
+    }
+    .back-close {
+      position: absolute;
+      top: 0.6rem;
+      right: 0.8rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: var(--mid-gray);
+    }
+
+    /* role label */
+    .card-role {
+      font-size: calc(var(--year-size) * 0.9);
+      color: var(--mid-gray);
+      margin-top: 0.4rem;
+      text-align: center;
+      font-style: italic;
+    }
+
+    /* extra affiliation lines under the role label (PI card only) */
+    .card-role-sub {
+      font-size: calc(var(--year-size) * 0.85);
+      color: var(--mid-gray);
+      margin-top: 0.1rem;
+      text-align: center;
+    }
+
+    /* loading */
+    #loading { text-align: center; padding: 3rem; font-size: 1.1rem; color: var(--mid-gray); }
+    #error-msg { color: crimson; text-align: center; padding: 2rem; }
+  </style>
+  <script src="./starfield-bg.js" defer></script>
+  <script type="module" crossorigin src="./assets/site-theme-B9MVS1b2.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/site-theme-DjAdJj0V.css">
+</head>
+<body class="page-team" data-force-theme="dark">
+
+<!-- NAV -->
+<header class="site-header" role="banner">
+  <div class="site-header-inner">
+    <a class="site-brand" href="index.html" aria-label="Photon Intelligence Lab home">
+      <img class="site-brand-mark brand-on-dark" src="./images/brand/phi-mark-on-dark.png" alt="" aria-hidden="true"><img class="site-brand-mark brand-on-light" src="./images/brand/phi-mark-on-light.png" alt="" aria-hidden="true">
+      <span class="site-brand-copy"><strong>Photon Intelligence Lab</strong>Stony Brook University</span>
+    </a>
+    <div class="site-header-actions">
+      <nav aria-label="Primary"><ul class="site-nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="publications.html">Publications</a></li>
+        <li><a href="team.html" aria-current="page">Team</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul></nav>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main>
+  <div id="loading">Loading members…</div>
+  <div id="error-msg" style="display:none"></div>
+  <div id="members-container"></div>
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <img class="site-footer-mark brand-on-dark" src="./images/brand/phi-mark-on-dark.png" alt="" aria-hidden="true"><img class="site-footer-mark brand-on-light" src="./images/brand/phi-mark-on-light.png" alt="" aria-hidden="true">
+    <p>Photon Intelligence Lab · Department of Computer Science · Stony Brook University</p>
+    <p>&copy; <span id="year"></span> · <a href="https://www.cs.stonybrook.edu" target="_blank" rel="noopener noreferrer">CS Department</a> · <a href="https://www.stonybrook.edu" target="_blank" rel="noopener noreferrer">Stony Brook University</a></p>
+  </div>
+</footer>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* ── helpers ── */
+function emailId(email) {
+  return (email || '').split('@')[0];
+}
+
+function normalizeExternalUrl(url) {
+  const value = (url || '').trim();
+  if (!value) return null;
+  return /^[a-z][a-z\d+.-]*:/i.test(value) ? value : `https://${value}`;
+}
+
+function driveDirectUrl(url) {
+  if (!url) return null;
+  // file/d/ID/view
+  let m = url.match(/\/file\/d\/([\w-]+)/);
+  if (m) return `https://drive.usercontent.google.com/download?id=${m[1]}&export=view&authuser=0`;
+  // ?id=ID  or  &id=ID
+  m = url.match(/[?&]id=([\w-]+)/);
+  if (m) return `https://drive.usercontent.google.com/download?id=${m[1]}&export=view&authuser=0`;
+  return url; // non-Drive URL, use as-is
+}
+
+function extractYear(str) {
+  if (!str) return 9999;
+  const m = str.match(/(\d{4})/);
+  return m ? parseInt(m[1]) : 9999;
+}
+
+const SEASON_ORDER = { spring: 0, summer: 1, fall: 2, winter: 3 };
+function extractSeason(str) {
+  if (!str) return 99;
+  const s = str.toLowerCase();
+  for (const [k, v] of Object.entries(SEASON_ORDER)) if (s.includes(k)) return v;
+  return 99;
+}
+
+function lastName(name) {
+  if (!name) return '';
+  const parts = name.trim().split(/\s+/);
+  return parts[parts.length - 1].toLowerCase();
+}
+function firstName(name) {
+  if (!name) return '';
+  return name.trim().split(/\s+/)[0].toLowerCase();
+}
+
+function sortMembers(arr) {
+  return arr.sort((a, b) => {
+    const ya = extractYear(a.year), yb = extractYear(b.year);
+    if (ya !== yb) return ya - yb;
+    const sa = extractSeason(a.year), sb = extractSeason(b.year);
+    if (sa !== sb) return sa - sb;
+    const la = lastName(a.name), lb = lastName(b.name);
+    if (la !== lb) return la < lb ? -1 : 1;
+    return firstName(a.name) < firstName(b.name) ? -1 : 1;
+  });
+}
+
+const PROGRAM_MAP = {
+  'Principal Investigator': 'Principal Investigator',
+  'Faculty': 'Faculty',
+  'PhD': 'Ph.D.',
+  'MS': 'Masters',
+  'Undergraduate': 'Undergraduate',
+};
+const GROUP_ORDER = ['Principal Investigator', 'Faculty', 'PhD', 'MS', 'Undergraduate'];
+
+// Parse raw program string: returns { baseProgram, isCollaborating }
+// Handles: "PhD - collaborator", "MS - collaborator", "Undergraduate - collaborator"
+function parseProgram(raw) {
+  const isCollaborating = /collaborator/i.test(raw);
+  const base = raw.split(/\s*-\s*collaborator/i)[0].trim();
+  return { baseProgram: base, isCollaborating };
+}
+
+/* ── card builder ── */
+function buildCard(m) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'card-wrapper';
+
+  const inner = document.createElement('div');
+  inner.className = 'card-inner';
+
+  /* FRONT */
+  const front = document.createElement('div');
+  front.className = (m.program === 'Principal Investigator' || m.program === 'Faculty') ? 'card-front faculty' : 'card-front';
+
+  // photo — prefer the locally-downloaded copy (named by email ID): it's
+  // same-origin and instant, whereas the sheet's Drive link is a slow/
+  // sometimes-blocked cross-origin fetch on every page load. Fall back to
+  // the Drive URL only if there's no local copy yet (e.g. a brand-new
+  // member not synced into public/profile_pics/ yet).
+  function makePhotoImg(url) {
+    const img = document.createElement('img');
+    img.className = 'card-photo';
+    img.alt = m.name;
+    img.style.background = '#e8e8e8';
+    const local = `profile_pics/${m.uid}.png`;
+    const remote = url || '';
+    // No photo anywhere: swap in a transparent 1x1 so the gray box shows with
+    // no broken-image glyph or alt text (the name is printed below the photo).
+    const BLANK = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+    const showPlaceholder = () => { img.onerror = null; img.alt = ''; img.src = BLANK; };
+    img.onerror = () => {
+      if (!img.src.endsWith(local) && remote) {
+        img.onerror = showPlaceholder;
+        img.src = remote;
+      } else {
+        showPlaceholder();
+      }
+    };
+    img.src = local;
+    return img;
+  }
+  if (m.website) {
+    const a = document.createElement('a');
+    a.href = m.website;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.className = 'card-photo-link';
+    a.appendChild(makePhotoImg(m.photo || ''));
+    front.appendChild(a);
+  } else {
+    front.appendChild(makePhotoImg(m.photo || ''));
+  }
+
+  // name
+  const name = document.createElement('div');
+  name.className = 'card-name';
+  name.textContent = m.name;
+  front.appendChild(name);
+
+  // role label
+  const role = document.createElement('div');
+  role.className = 'card-role';
+  const roleLabel = PROGRAM_MAP[m.program] || m.program;
+  role.textContent = m.isCollaborating ? `${roleLabel} (Collaborator)` : roleLabel;
+  front.appendChild(role);
+
+  // extra affiliation lines (PI card only)
+  if (m.program === 'Principal Investigator') {
+    ['Assistant Professor', 'Department of Computer Science', 'Stony Brook University'].forEach(line => {
+      const sub = document.createElement('div');
+      sub.className = 'card-role-sub';
+      sub.textContent = line;
+      front.appendChild(sub);
+    });
+  }
+
+  // year (skip for PI / Faculty)
+  if (m.program !== 'Principal Investigator' && m.program !== 'Faculty' && m.year) {
+    const yr = document.createElement('div');
+    yr.className = 'card-year';
+    yr.textContent = `${extractYear(m.year)} – Current`;
+    front.appendChild(yr);
+  }
+
+  // Categorized research tags (skip for PI / Faculty — the PI shows none).
+  // Chips share the .phi-tag design with the Publications page and deep-link
+  // into publications.html filtered to that tag.
+  const TAG_CATEGORIES = ['imaging', 'light-transport', 'machine-learning', 'application'];
+  const displayTagLabel = (slug) => String(slug).split('-').map((word) => {
+    const upper = word.toUpperCase();
+    if (upper === '3D' || upper === 'AI') return upper;
+    if (word === 'of' || word === 'for' || word === 'the') return word;
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }).join(' ');
+
+  const byCat = m.tagsByCategory || {};
+  const hasTags = TAG_CATEGORIES.some(cat => (byCat[cat] || []).length);
+  if (m.program !== 'Principal Investigator' && m.program !== 'Faculty' && hasTags) {
+    const wrap = document.createElement('div');
+    wrap.className = 'card-tags';
+    const row = document.createElement('div');
+    // phi-scroll-light: the card is white but the document is color-scheme:
+    // dark, so without this the two-row clamp's scrollbar paints black.
+    row.className = 'phi-tag-row phi-scroll-light';
+    TAG_CATEGORIES.forEach(cat => {
+      (byCat[cat] || []).forEach(slug => {
+        const a = document.createElement('a');
+        a.className = `phi-tag phi-tag--${cat}`;
+        a.href = `publications.html?tag=${encodeURIComponent(slug)}`;
+        a.textContent = displayTagLabel(slug);
+        row.appendChild(a);
+      });
+    });
+    wrap.appendChild(row);
+    front.appendChild(wrap);
+  }
+
+  // links (visible on hover)
+  const links = document.createElement('div');
+  links.className = 'card-links';
+  if (m.website) {
+    const wa = document.createElement('a');
+    wa.href = m.website;
+    wa.target = '_blank';
+    wa.rel = 'noopener';
+    wa.textContent = 'web';
+    links.appendChild(wa);
+  }
+  if (m.email) {
+    const ea = document.createElement('a');
+    ea.href = `mailto:${m.email}`;
+    ea.textContent = 'email';
+    links.appendChild(ea);
+  }
+  if (m.bio) {
+    const bioBtn = document.createElement('button');
+    bioBtn.className = 'bio-btn';
+    bioBtn.textContent = 'bio';
+    bioBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      wrapper.classList.add('flipped');
+    });
+    links.appendChild(bioBtn);
+  }
+  front.appendChild(links);
+
+  /* BACK */
+  const back = document.createElement('div');
+  back.className = 'card-back';
+
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'back-close';
+  closeBtn.textContent = '✕';
+  closeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    wrapper.classList.remove('flipped');
+  });
+  back.appendChild(closeBtn);
+
+  const backName = document.createElement('div');
+  backName.className = 'card-back-name';
+  backName.textContent = m.name;
+  back.appendChild(backName);
+
+  const bioText = document.createElement('div');
+  bioText.className = 'card-bio-text';
+  bioText.textContent = m.bio || '';
+  back.appendChild(bioText);
+
+  inner.appendChild(front);
+  inner.appendChild(back);
+  wrapper.appendChild(inner);
+
+  // click outside to flip back
+  document.addEventListener('click', (e) => {
+    if (!wrapper.contains(e.target)) wrapper.classList.remove('flipped');
+  });
+
+  return wrapper;
+}
+
+/* ── roster-level de-dupe & overrides ──
+   The Google Sheet is the source of truth for member content (bio, tags,
+   photo, etc.), but it has no durable per-person key: someone can end up
+   with two rows under two different "CS Email" values (e.g. a role change,
+   or filling the form out again before/after getting a stonybrook.edu
+   account). That produces two cards for the same person. We de-dupe here,
+   client-side, by normalized full name and keep only the more senior role,
+   so this stays correct automatically no matter who shows up twice next. */
+function normalizedName(name) {
+  return (name || '').trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+// Lower rank = more senior. Program rank comes from GROUP_ORDER; a
+// non-collaborator card outranks a collaborator card at the same program.
+function seniorityRank(m) {
+  const progIdx = GROUP_ORDER.indexOf(m.program);
+  return (progIdx === -1 ? GROUP_ORDER.length : progIdx) * 2 + (m.isCollaborating ? 1 : 0);
+}
+
+function dedupeByName(members) {
+  const byName = new Map();
+  members.forEach(m => {
+    const key = normalizedName(m.name);
+    const existing = byName.get(key);
+    if (!existing || seniorityRank(m) < seniorityRank(existing)) byName.set(key, m);
+  });
+  return Array.from(byName.values());
+}
+
+// Explicit, narrowly-scoped overrides for role facts that are known to be
+// stale in the sheet. Keep this list short and keyed by exact normalized
+// name; the sheet remains the source of truth for everything else.
+//   - Sai Ram Kasanagottu is a PhD student *collaborator* (works with the
+//     lab, not enrolled as a core lab PhD student), but his sheet row just
+//     says "PhD" with no "- collaborator" suffix, so parseProgram() alone
+//     would misclassify him as a regular (non-collaborator) PhD student.
+const ROSTER_OVERRIDES = {
+  'sai ram kasanagottu': (m) => { m.isCollaborating = true; },
+};
+
+function applyRosterOverrides(members) {
+  members.forEach(m => {
+    const override = ROSTER_OVERRIDES[normalizedName(m.name)];
+    if (override) override(m);
+  });
+  return members;
+}
+
+// bucket members by program + collaborator status, sort, pin Akshat Dave
+// first among PIs, and flatten into the final render order.
+function groupAndSort(members) {
+  const grouped = {};
+  GROUP_ORDER.forEach(k => { grouped[k] = { regular: [], collab: [] }; });
+
+  members.forEach(m => {
+    if (!GROUP_ORDER.includes(m.program)) return;
+    if (m.isCollaborating) grouped[m.program].collab.push(m);
+    else grouped[m.program].regular.push(m);
+  });
+
+  GROUP_ORDER.forEach(prog => {
+    grouped[prog].regular = sortMembers(grouped[prog].regular);
+    grouped[prog].collab  = sortMembers(grouped[prog].collab);
+    if (prog === 'Principal Investigator') {
+      const idx = grouped[prog].regular.findIndex(m => m.name === 'Akshat Dave');
+      if (idx > 0) {
+        const [ad] = grouped[prog].regular.splice(idx, 1);
+        grouped[prog].regular.unshift(ad);
+      }
+    }
+  });
+
+  return GROUP_ORDER.flatMap(prog => [...grouped[prog].regular, ...grouped[prog].collab]);
+}
+
+// Full pipeline from a flat list of members (however they were sourced —
+// snapshot JSON or a freshly-parsed live sheet) to the final render order.
+function buildRoster(rawMembers) {
+  const members = applyRosterOverrides(rawMembers.map(m => ({ ...m })));
+  return groupAndSort(dedupeByName(members));
+}
+
+/* ── render ── */
+let lastRosterSignature = null;
+
+function render(ordered) {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('error-msg').style.display = 'none';
+  const container = document.getElementById('members-container');
+  container.innerHTML = '';
+  const grid = document.createElement('div');
+  grid.className = 'card-grid';
+  ordered.forEach(m => grid.appendChild(buildCard(m)));
+  container.appendChild(grid);
+}
+
+// Only touch the DOM if the roster actually changed, so the background
+// live-sheet refresh doesn't flash/rebuild the page on every poll.
+function renderIfChanged(rawMembers) {
+  const ordered = buildRoster(rawMembers);
+  const signature = JSON.stringify(ordered.map(m =>
+    [m.name, m.email, m.program, m.isCollaborating, m.tags, m.photo, m.website, m.year, m.bio]));
+  if (signature === lastRosterSignature) return;
+  lastRosterSignature = signature;
+  render(ordered);
+}
+
+/* ── CSV parsing ──
+   Small state-machine parser (no library) that handles RFC4180-style quoted
+   fields, including embedded commas and embedded newlines (the sheet's bio
+   column can contain both). Replaces the SheetJS/XLSX CDN dependency. */
+function parseCsv(text) {
+  const rows = [];
+  let row = [], field = '', inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (inQuotes) {
+      if (c === '"') {
+        if (text[i + 1] === '"') { field += '"'; i++; }
+        else inQuotes = false;
+      } else {
+        field += c;
+      }
+    } else if (c === '"') {
+      inQuotes = true;
+    } else if (c === ',') {
+      row.push(field); field = '';
+    } else if (c === '\r') {
+      // skip; newline is handled on \n (covers both \r\n and bare \r\n runs)
+    } else if (c === '\n') {
+      row.push(field); rows.push(row); row = []; field = '';
+    } else {
+      field += c;
+    }
+  }
+  if (field.length > 0 || row.length > 0) { row.push(field); rows.push(row); }
+  return rows;
+}
+
+function rowsToObjects(rows) {
+  if (!rows.length) return [];
+  const headers = rows[0];
+  return rows.slice(1)
+    .filter(r => r.some(cell => cell !== ''))
+    .map(r => { const obj = {}; headers.forEach((h, i) => { obj[h] = r[i] ?? ''; }); return obj; });
+}
+
+// Map de-duplicated raw sheet rows (keyed by literal header text) into the
+// member shape used for rendering. Mirrors scripts/refresh_team_snapshot.py
+// — keep the two in sync if the sheet's columns change.
+function mapRowsToMembers(dataRows, photoColKey) {
+  // de-dupe by CS Email: keep the latest Timestamp submission per email
+  // (a person resubmitting the form under the same email, not a new person)
+  const byEmail = {};
+  dataRows.forEach(r => {
+    const email = (r['CS Email'] || '').trim().toLowerCase();
+    if (!email) return;
+    const ts = new Date(r['Timestamp'] || 0).getTime();
+    if (!byEmail[email] || ts > byEmail[email]._ts) byEmail[email] = { ...r, _ts: ts };
+  });
+
+  return Object.values(byEmail).map(r => {
+    const raw = (r['Current academic program'] || '').trim();
+    const { baseProgram, isCollaborating } = parseProgram(raw);
+    const photoUrl = (r[photoColKey] || '').trim();
+    const email = (r['CS Email'] || '').trim();
+    return {
+      name:            (r['Name'] || '').trim(),
+      email,
+      uid:             emailId(email),
+      program:         baseProgram,
+      isCollaborating,
+      // Tags no longer come from this sheet's free-text "Research areas"
+      // column: the curated "Tagged Team" spreadsheet is the tag source of
+      // truth, baked into the snapshot (public/data/team.json) as
+      // tags/tagsByCategory and merged over live rows in init().
+      tags:            [],
+      photo:           driveDirectUrl(photoUrl),
+      website:         normalizeExternalUrl(r['Personal website (url)']),
+      year:            (r['Year you joined'] || '').trim(),
+      bio:             (r['Short bio about your research'] || '').trim(),
+    };
+  });
+}
+
+/* ── load: instant snapshot, then a background live-sheet refresh ──
+   team.html used to fetch the whole Google Sheet as XLSX (plus a CDN XLSX
+   parser library) on every single page load/reload, which made the page
+   slow and dependent on Google Sheets + a third-party CDN being fast. Now
+   we render immediately from a prebuilt snapshot (public/data/team.json,
+   see scripts/refresh_team_snapshot.py) and only hit the live sheet, as a
+   lightweight CSV export, in the background — re-rendering just once if
+   the content actually changed. */
+const SHEET_ID = '1_AWaXT6Pg1JpvUpT1CH3LVZLQY50Hq8oI7HIuFFpmFg';
+const SHEET_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv`;
+const SNAPSHOT_URL = 'data/team.json';
+
+async function loadSnapshotMembers() {
+  const resp = await fetch(`${SNAPSHOT_URL}?v=${Date.now()}`, { cache: 'no-store' });
+  if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+  const data = await resp.json();
+  const members = Array.isArray(data.members) ? data.members : [];
+  if (!members.length) throw new Error('snapshot has no members');
+  return members;
+}
+
+async function fetchLiveMembers() {
+  const resp = await fetch(SHEET_CSV_URL, { cache: 'no-store' });
+  if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+  const text = await resp.text();
+  const rows = parseCsv(text);
+  if (!rows.length) throw new Error('empty CSV response');
+  const photoColKey = rows[0][5]; // column F = "Link to your photo in Profile picture"
+  const members = mapRowsToMembers(rowsToObjects(rows), photoColKey);
+  if (!members.length) throw new Error('no member rows parsed');
+  return members;
+}
+
+// The snapshot carries the curated categorized tags (from the "Tagged Team"
+// sheet). The live profile sheet knows nothing about them, so its rows get
+// the snapshot's tag data merged in by uid before rendering.
+let snapshotTagsByUid = {};
+
+function mergeSnapshotTags(members) {
+  members.forEach(m => {
+    const snap = snapshotTagsByUid[m.uid];
+    if (snap) {
+      m.tags = snap.tags || [];
+      if (snap.tagsByCategory) m.tagsByCategory = snap.tagsByCategory;
+    }
+  });
+  return members;
+}
+
+async function init() {
+  let renderedSomething = false;
+  try {
+    const snapshotMembers = await loadSnapshotMembers();
+    snapshotTagsByUid = Object.fromEntries(snapshotMembers.map(m =>
+      [m.uid, { tags: m.tags, tagsByCategory: m.tagsByCategory }]));
+    renderIfChanged(snapshotMembers);
+    renderedSomething = true;
+  } catch (err) {
+    console.warn('Team snapshot unavailable, falling back to the live sheet:', err);
+  }
+
+  try {
+    // Background refresh: re-render only if the live sheet's content
+    // differs from what's already on screen (renderIfChanged handles that).
+    renderIfChanged(mergeSnapshotTags(await fetchLiveMembers()));
+    renderedSomething = true;
+  } catch (err) {
+    if (!renderedSomething) {
+      document.getElementById('loading').style.display = 'none';
+      const errEl = document.getElementById('error-msg');
+      errEl.style.display = 'block';
+      errEl.textContent = `Could not load member data: ${err.message}. Make sure the Google Sheet is publicly accessible ("Anyone with the link can view").`;
+    } else {
+      console.warn('Live team roster refresh failed; showing the last known snapshot.', err);
+    }
+  }
+}
+
+init();
+
+</script>
+</body>
+</html>
+
+<!-- cd /home/irnkim/lab-website && python3 -m http.server 8080 -->
