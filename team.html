@@ -27,7 +27,10 @@
       --tag-bg: #888;
       --card-bg: #fff;
       --page-bg: #fff;
-      --card-w: 220px;
+      /* Minimum card width for the auto-fill grid. 260px caps the grid at
+         FOUR columns inside the 1280px content width (5×260 + gaps no longer
+         fit), while narrower screens still degrade to 3/2/1 columns. */
+      --card-w: 260px;
     }
 
     body {
@@ -297,6 +300,7 @@
     <div class="site-header-actions">
       <nav aria-label="Primary"><ul class="site-nav-links">
         <li><a href="index.html">Home</a></li>
+        <li><a href="research.html">Research</a></li>
         <li><a href="publications.html">Publications</a></li>
         <li><a href="team.html" aria-current="page">Team</a></li>
         <li><a href="contact.html">Contact</a></li>

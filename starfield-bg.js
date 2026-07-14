@@ -156,9 +156,22 @@
   var driftPx = 0;
   var driftClock = performance.now();
 
+  /* Freeze hook: pages with a pinned section (research page's Outcomes
+     horizontal scroll) call window.phiStarfieldFreeze(true) while pinned so
+     the starfield holds perfectly still — no scroll parallax, no ambient
+     drift — instead of competing with the sideways card motion. On
+     unfreeze, the usual LERP glides the field to the new scroll position. */
+  var frozen = false, frozenScroll = 0;
+  window.phiStarfieldFreeze = function (on) {
+    on = !!on;
+    if (on === frozen) return;
+    frozen = on;
+    if (frozen) frozenScroll = window.scrollY || window.pageYOffset || 0;
+  };
+
   function advanceDrift() {
     var now = performance.now();
-    if (AMBIENT && !reduceMotion && document.visibilityState !== 'hidden') {
+    if (AMBIENT && !reduceMotion && !frozen && document.visibilityState !== 'hidden') {
       driftPx += ((now - driftClock) / 1000) * AMBIENT;
     }
     driftClock = now;
@@ -166,7 +179,8 @@
   }
 
   function tick() {
-    var target = (window.scrollY || window.pageYOffset || 0) + advanceDrift();
+    var scroll = frozen ? frozenScroll : (window.scrollY || window.pageYOffset || 0);
+    var target = scroll + advanceDrift();
     if (firstPaint) { current = target; firstPaint = false; }
     else if (reduceMotion) current = target;
     else current += (target - current) * LERP;

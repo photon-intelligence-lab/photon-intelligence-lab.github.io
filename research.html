@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<!-- data-theme, class="no-anim" and the inline background are set statically
+     (not by JS) so first paint is already correct — see site-theme.css/js
+     for what no-anim suppresses and when it's lifted. -->
+<html lang="en" data-theme="dark" class="no-anim" style="background:#000">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <title>Photon Intelligence Lab | Research</title>
+  <meta name="description"
+    content="Photon Intelligence: a machine's ability to capture, model, and infer the physics of light, revealing what's invisible to us.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700&family=Roboto+Condensed:wght@400;700&display=optional" rel="stylesheet">
+  <style>
+    /* ============ Research page (Photon Intelligence) ============
+       Chapters layout: dark hero, three tinted building-block panels
+       (capture / model / infer, tinted per tag-category color), then a
+       pinned outcomes section whose application cards scroll horizontally. */
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      position: relative;
+      /* No overflow-x here: any non-visible overflow on body disables
+         position:sticky (the Outcomes pin). html{overflow-x:clip} in
+         site-theme.css already handles stray horizontal overflow. */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .pi-wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 12px 24px 64px;
+    }
+
+    /* ---- Hero ---- */
+    .pi-hero {
+      scroll-margin-top: 190px;
+      margin-bottom: 34px;
+    }
+
+    .pi-hero-inner {
+      max-width: 940px;
+      margin: 0 auto;
+      padding: 40px 12px 2px;
+      text-align: center;
+      background-color: var(--color-bg);
+      border-radius: 36px;
+    }
+
+    .pi-hero-eyebrow {
+      font-size: 32px;
+      font-weight: 300;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--nav-link-color, var(--color-primary));
+      margin-bottom: 18px;
+      position: relative;
+      top: -16px;
+    }
+
+    /* .page-research prefix beats site-theme.css's `.page-research h1 { color: var(--panel-ink) }`
+       (same-specificity rule that loads after this inline style block). */
+    .page-research .pi-hero h1 {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: 60px;
+      line-height: 1.25;
+      color: #ffffff;
+      margin: 0 0 26px;
+    }
+
+    .pi-hero h1 a {
+      text-decoration: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .pi-hero h1 a:hover {
+      text-decoration: underline;
+      text-underline-offset: 6px;
+    }
+
+    .pi-em-capture { color: #d8a06a; }
+    .pi-em-model { color: #8fbf9f; }
+    .pi-em-infer { color: #8fb8dc; }
+    .pi-em-invisible { color: #b79ad6; font-weight: 600; }
+
+    /* ---- Section headings (white unrounded panel) ---- */
+    .page-research .pi-panel-heading {
+      display: inline-block;
+      background: #ffffff;
+      padding: 0.45em 1em;
+      font-family: var(--font-display);
+      font-size: 30px;
+      font-weight: 300;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #101014;
+      margin: 0;
+    }
+
+    .pi-heading-row {
+      text-align: center;
+      margin-bottom: 34px;
+    }
+
+    /* ---- Building blocks ---- */
+    .pi-blocks {
+      scroll-margin-top: 190px;
+      margin-bottom: 72px;
+    }
+
+    .pi-block {
+      color: #17171c;
+      padding: 44px 48px;
+      scroll-margin-top: 190px;
+    }
+
+    .pi-block--capture { background: #fbf2e9; }
+    .pi-block--model { background: #eff6f1; }
+    .pi-block--infer { background: #edf4fb; }
+
+    .pi-block-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+      gap: 44px;
+      align-items: center;
+    }
+
+    .pi-block-grid--reverse {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    }
+
+    .pi-block-num {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: 4.2rem;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .pi-block--capture .pi-block-num { color: rgba(106, 66, 34, 0.28); }
+    .pi-block--model .pi-block-num { color: rgba(46, 90, 65, 0.28); }
+    .pi-block--infer .pi-block-num { color: rgba(29, 78, 121, 0.28); }
+
+    .pi-block h3 {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 1.8rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #101014;
+      margin: 0 0 4px;
+    }
+
+    .pi-block-sub {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .pi-block p {
+      font-size: 1.18rem;
+      line-height: 1.65;
+      color: #3f3f46;
+      margin: 0 0 20px;
+      max-width: 58ch;
+    }
+
+    .pi-tags-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .pi-block--capture .pi-block-sub,
+    .pi-block--capture .pi-tags-label { color: #6a4222; }
+    .pi-block--model .pi-block-sub,
+    .pi-block--model .pi-tags-label { color: #2e5a41; }
+    .pi-block--infer .pi-block-sub,
+    .pi-block--infer .pi-tags-label { color: #1d4e79; }
+
+    .pi-block-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    /* Hover-driven crossfade slideshow */
+    .pi-slides {
+      aspect-ratio: 4/3;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      position: relative;
+      background: #ffffff;
+    }
+
+    .pi-slides img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+
+    .pi-slides img.active {
+      opacity: 1;
+    }
+
+    .pi-connector {
+      display: flex;
+      justify-content: center;
+    }
+
+    .pi-connector div {
+      width: 2px;
+      height: 48px;
+    }
+
+    /* ---- Outcomes: pinned horizontal scroll ---- */
+    .pi-outcomes {
+      scroll-margin-top: 190px;
+    }
+
+    .pi-h-wrap {
+      height: 340vh;
+      position: relative;
+    }
+
+    .pi-h-sticky {
+      position: sticky;
+      top: 120px;
+      overflow: hidden;
+    }
+
+    .pi-h-sticky .pi-heading-row {
+      margin-bottom: 30px;
+    }
+
+    .pi-h-track {
+      display: flex;
+      gap: 24px;
+      will-change: transform;
+    }
+
+    .pi-app {
+      flex: 0 0 100%;
+      min-width: 0;
+      background: #f4eef9;
+      color: #17171c;
+      padding: 38px 44px;
+    }
+
+    .pi-app-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+      gap: 36px;
+      align-items: center;
+    }
+
+    .pi-app-img {
+      aspect-ratio: 16/11;
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+
+    .pi-app-img img,
+    .pi-app-img video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .pi-app h3 {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 1.6rem;
+      color: #101014;
+      margin: 0 0 12px;
+    }
+
+    .pi-app p {
+      font-size: 1.18rem;
+      line-height: 1.65;
+      color: #3f3f46;
+      margin: 0;
+      max-width: 52ch;
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 900px) {
+      .pi-hero h1 {
+        font-size: 38px;
+      }
+
+      .pi-hero-eyebrow {
+        font-size: 22px;
+      }
+
+      .pi-block-grid,
+      .pi-block-grid--reverse,
+      .pi-app-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pi-block-grid--reverse .pi-slides {
+        order: 2;
+      }
+
+      .pi-panel-heading {
+        font-size: 20px;
+      }
+    }
+  </style>
+  <script src="./starfield-bg.js" defer></script>
+  <script type="module" crossorigin src="./assets/site-theme-B9MVS1b2.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/site-theme-DjAdJj0V.css">
+</head>
+
+<body class="page-research" data-force-theme="dark">
+  <header class="site-header" role="banner">
+    <div class="site-header-inner">
+      <a class="site-brand" href="index.html" aria-label="Photon Intelligence Lab home">
+        <img class="site-brand-mark brand-on-dark" src="./images/brand/phi-mark-on-dark.png" alt="" aria-hidden="true"><img class="site-brand-mark brand-on-light" src="./images/brand/phi-mark-on-light.png" alt="" aria-hidden="true">
+        <span class="site-brand-copy"><strong>Photon Intelligence Lab</strong>Stony Brook University</span>
+      </a>
+      <div class="site-header-actions">
+        <nav aria-label="Primary"><ul class="site-nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="research.html" aria-current="page">Research</a></li>
+          <li><a href="publications.html">Publications</a></li>
+          <li><a href="team.html">Team</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul></nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="pi-wrap" id="top">
+
+    <!-- WHAT IS PHOTON INTELLIGENCE -->
+    <section id="what" class="pi-hero">
+      <div class="pi-hero-inner">
+        <div class="pi-hero-eyebrow">What is Photon Intelligence?</div>
+        <h1>A machine's ability to&nbsp;<a href="#block-capture" class="pi-em-capture">capture</a>,
+          <a href="#block-model" class="pi-em-model">model</a>, and&nbsp;<a href="#block-infer" class="pi-em-infer">infer</a>
+          the physics of light,<br>revealing what's <a href="#outcomes" class="pi-em-invisible">invisible</a> to us.&nbsp;</h1>
+      </div>
+    </section>
+
+    <!-- BUILDING BLOCKS -->
+    <section id="blocks" class="pi-blocks">
+      <div class="pi-heading-row">
+        <h2 class="pi-panel-heading">Building blocks of Photon Intelligence</h2>
+      </div>
+
+      <article id="block-capture" class="pi-block pi-block--capture">
+        <div class="pi-block-grid">
+          <div>
+            <div class="pi-block-num">01</div>
+            <h3>Capture</h3>
+            <div class="pi-block-sub">Computational imaging</div>
+            <p>Cameras that measure what ordinary sensors discard: the arrival time of individual photons, the
+              polarization state of light, thermal emission, per-pixel change events. These extra dimensions encode
+              scene information no RGB image contains.</p>
+            <div class="pi-tags-label">Cameras we build &amp; use</div>
+            <div class="pi-block-tags">
+              <a class="phi-tag phi-tag--imaging" href="publications.html?tag=time-of-flight">Time of Flight</a>
+              <a class="phi-tag phi-tag--imaging" href="publications.html?tag=single-photon-imaging">Single Photon Imaging</a>
+              <a class="phi-tag phi-tag--imaging" href="publications.html?tag=polarization">Polarization</a>
+              <a class="phi-tag phi-tag--imaging" href="publications.html?tag=event-cameras">Event Cameras</a>
+              <a class="phi-tag phi-tag--imaging" href="publications.html?tag=thermal-imaging">Thermal Imaging</a>
+              <a class="phi-tag phi-tag--imaging" href="publications.html?tag=radar">Radar</a>
+            </div>
+          </div>
+          <div class="pi-slides" data-slideshow>
+            <img class="active" src="images/research/capture/nlos.png" alt="Non-line-of-sight capture research figure">
+            <img src="images/research/capture/pandora.png" alt="Polarization capture research figure">
+            <img src="images/research/capture/spad_robot.png" alt="SPAD-equipped robot capture research figure">
+            <img src="images/research/capture/Picture1.png" alt="Computational imaging capture research figure">
+          </div>
+        </div>
+      </article>
+
+      <div class="pi-connector" aria-hidden="true"><div style="background:linear-gradient(180deg, #d8a06a, #8fbf9f)"></div></div>
+
+      <article id="block-model" class="pi-block pi-block--model">
+        <div class="pi-block-grid pi-block-grid--reverse">
+          <div class="pi-slides" data-slideshow>
+            <img class="active" src="images/research/model/specular.png" alt="Specular reflection modeling research figure">
+            <img src="images/research/model/birefringence.png" alt="Birefringence modeling research figure">
+            <img src="images/research/model/sfp.png" alt="Shape from polarization research figure">
+            <img src="images/research/model/nlos.png" alt="Non-line-of-sight light transport research figure">
+          </div>
+          <div>
+            <div class="pi-block-num">02</div>
+            <h3>Model</h3>
+            <div class="pi-block-sub">Light transport</div>
+            <p>Differentiable, physics-based models of how light moves through the world: bouncing between surfaces,
+              scattering through volumes, reflecting off materials. Simulation that runs forward to predict
+              measurements, and backward to explain them.</p>
+            <div class="pi-tags-label">Light effects we model</div>
+            <div class="pi-block-tags">
+              <a class="phi-tag phi-tag--light-transport" href="publications.html?tag=multi-bounce-scattering">Multi Bounce Scattering</a>
+              <a class="phi-tag phi-tag--light-transport" href="publications.html?tag=surface-reflectance">Surface Reflectance</a>
+              <a class="phi-tag phi-tag--light-transport" href="publications.html?tag=volumetric-scattering">Volumetric Scattering</a>
+              <a class="phi-tag phi-tag--light-transport" href="publications.html?tag=specular-reflections">Specular Reflections</a>
+              <a class="phi-tag phi-tag--light-transport" href="publications.html?tag=birefringence">Birefringence</a>
+              <a class="phi-tag phi-tag--light-transport" href="publications.html?tag=shadows">Shadows</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <div class="pi-connector" aria-hidden="true"><div style="background:linear-gradient(180deg, #8fbf9f, #8fb8dc)"></div></div>
+
+      <article id="block-infer" class="pi-block pi-block--infer">
+        <div class="pi-block-grid">
+          <div>
+            <div class="pi-block-num">03</div>
+            <h3>Infer</h3>
+            <div class="pi-block-sub">Physics-based machine learning</div>
+            <p>Learning algorithms that fuse captured signals with transport models to recover what neither could
+              alone. Neural representations, deep priors, and test-time optimization turn ill-posed inverse problems
+              into solvable ones.</p>
+            <div class="pi-tags-label">Learning methods we develop</div>
+            <div class="pi-block-tags">
+              <a class="phi-tag phi-tag--machine-learning" href="publications.html?tag=inverse-problems">Inverse Problems</a>
+              <a class="phi-tag phi-tag--machine-learning" href="publications.html?tag=neural-rendering">Neural Rendering</a>
+              <a class="phi-tag phi-tag--machine-learning" href="publications.html?tag=implicit-representations">Implicit Representations</a>
+              <a class="phi-tag phi-tag--machine-learning" href="publications.html?tag=deep-priors">Deep Priors</a>
+              <a class="phi-tag phi-tag--machine-learning" href="publications.html?tag=test-time-optimization">Test Time Optimization</a>
+              <a class="phi-tag phi-tag--machine-learning" href="publications.html?tag=diffusion-models">Diffusion Models</a>
+              <a class="phi-tag phi-tag--machine-learning" href="publications.html?tag=3D-transformers">3D Transformers</a>
+            </div>
+          </div>
+          <div class="pi-slides" data-slideshow>
+            <img class="active" src="images/research/infer/test_time.png" alt="Test-time optimization research figure">
+            <img src="images/research/infer/poppy.gif" alt="Polarization-guided normal estimation research figure">
+            <img src="images/research/infer/what_if_eye.png" alt="Vision evolution research figure">
+            <img src="images/research/infer/orca.png" alt="Objects as radiance-field cameras research figure">
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- OUTCOMES: pinned horizontal scroll -->
+    <section id="outcomes" class="pi-outcomes">
+      <div class="pi-h-wrap" data-hscroll>
+        <div class="pi-h-sticky">
+          <div class="pi-heading-row">
+            <h2 class="pi-panel-heading">Outcome: Seeing the invisible</h2>
+          </div>
+          <div class="pi-h-track" data-hscroll-track>
+
+            <article class="pi-app">
+              <div class="pi-app-grid">
+                <div class="pi-app-img"><video data-scrub src="images/research/apps/pandora_scrub.mp4" muted playsinline preload="auto" aria-label="AR / VR: polarization-aided radiance decomposition (PANDORA)"></video></div>
+                <div>
+                  <h3>AR / VR</h3>
+                  <p>Digitizing objects and scenes so they stay faithful under any viewpoint and illumination,
+                    creating photorealistic, relightable assets for immersive worlds.</p>
+                </div>
+              </div>
+            </article>
+
+            <article class="pi-app">
+              <div class="pi-app-grid">
+                <div class="pi-app-img"><video data-scrub src="images/research/apps/navnlos_scrub.mp4" muted playsinline preload="auto" aria-label="Robotics: non-line-of-sight navigation"></video></div>
+                <div>
+                  <h3>Robotics</h3>
+                  <p>Perception that holds up where cameras fail: seeing around corners, through glare, and in
+                    photon-starved conditions.</p>
+                </div>
+              </div>
+            </article>
+
+            <article class="pi-app">
+              <div class="pi-app-grid">
+                <div class="pi-app-img"><video data-scrub src="images/research/apps/nest_scrub.mp4" muted playsinline preload="auto" aria-label="Biomedical imaging: neural stress tensor tomography (NeST)"></video></div>
+                <div>
+                  <h3>Biomedical imaging</h3>
+                  <p>Peering into scattering tissue at low light doses, pairing photon-limited measurements with
+                    learned priors for low-dose, depth-resolved modalities.</p>
+                </div>
+              </div>
+            </article>
+
+            <article class="pi-app">
+              <div class="pi-app-grid">
+                <div class="pi-app-img"><video data-scrub data-loops="1" src="images/research/apps/bls3d_scrub.mp4" muted playsinline preload="auto" aria-label="Quantum sensing: diffuse single-photon LiDAR scanning (Blurred LiDAR)"></video></div>
+                <div>
+                  <h3>Quantum sensing</h3>
+                  <p>Photon-resolved measurement for precision metrology: time-tagging for ranging and polarization
+                    for structural contrast at the limits of resolution.</p>
+                </div>
+              </div>
+            </article>
+
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <img class="site-footer-mark brand-on-dark" src="./images/brand/phi-mark-on-dark.png" alt="" aria-hidden="true"><img class="site-footer-mark brand-on-light" src="./images/brand/phi-mark-on-light.png" alt="" aria-hidden="true">
+      <p>Photon Intelligence Lab · Department of Computer Science · Stony Brook University</p>
+      <p>&copy; <span class="footer-year"></span> · <a href="https://www.cs.stonybrook.edu" target="_blank" rel="noopener noreferrer">CS Department</a> · <a href="https://www.stonybrook.edu" target="_blank" rel="noopener noreferrer">Stony Brook University</a></p>
+    </div>
+  </footer>
+  <script>document.querySelectorAll('.footer-year').forEach(function (el) { el.textContent = new Date().getFullYear(); });</script>
+
+  <script>
+    // Hover-driven crossfade slideshows: images cycle only while the pointer
+    // is over the figure; otherwise the current image stays put.
+    document.querySelectorAll('[data-slideshow]').forEach(function (box) {
+      var imgs = Array.prototype.slice.call(box.querySelectorAll('img'));
+      var idx = 0, timer = null;
+      function advance() {
+        imgs[idx].classList.remove('active');
+        idx = (idx + 1) % imgs.length;
+        imgs[idx].classList.add('active');
+      }
+      // Hovering anywhere on the tinted panel (not just the image) runs the
+      // slideshow; leaving the panel pauses it on the current image.
+      var hoverScope = box.closest('.pi-block') || box;
+      hoverScope.addEventListener('mouseenter', function () {
+        if (timer) return;
+        timer = setInterval(advance, 1800);
+      });
+      hoverScope.addEventListener('mouseleave', function () {
+        clearInterval(timer);
+        timer = null;
+      });
+    });
+
+    // Outcomes horizontal scroll-through: the section pins under the header
+    // and vertical scroll translates the card track sideways. Horizontal
+    // travel completes at 85% of the pinned range so the last card is fully
+    // in view with dwell time before the section unpins.
+    (function () {
+      var wrap = document.querySelector('[data-hscroll]');
+      var track = document.querySelector('[data-hscroll-track]');
+      if (!wrap || !track) return;
+      var PIN_TOP = 120;
+      // Application-card videos scrub with the same scroll progress that
+      // slides the track: scrolling advances (or rewinds) the animation,
+      // no scroll leaves it frozen on the current frame. Each clip plays
+      // through LOOPS full cycles across the pinned range.
+      var LOOPS = 2; // default full play-throughs per pinned range
+      var vids = Array.prototype.slice.call(document.querySelectorAll('[data-scrub]'));
+      function scrub(p) {
+        vids.forEach(function (v) {
+          if (!v.duration || isNaN(v.duration)) return;
+          var loops = parseFloat(v.getAttribute('data-loops')) || LOOPS;
+          // Hold the final frame at the end of the travel: a plain modulo
+          // wraps p=1 back to t=0 and flashes the first frame.
+          var t = p >= 1 ? v.duration - 0.05
+                         : (p * v.duration * loops) % v.duration;
+          if (Math.abs(v.currentTime - t) > 0.03) v.currentTime = t;
+        });
+      }
+      function update() {
+        var sticky = wrap.firstElementChild;
+        var stickyH = sticky ? sticky.offsetHeight : 0;
+        var travel = Math.max((wrap.offsetHeight - stickyH) * 0.85, 1);
+        var p = Math.min(Math.max((PIN_TOP - wrap.getBoundingClientRect().top) / travel, 0), 1);
+        var maxX = Math.max(track.scrollWidth - track.clientWidth, 0);
+        track.style.transform = 'translateX(' + (-p * maxX).toFixed(1) + 'px)';
+        // Seek directly on scroll: scroll events are already frame-paced, and
+        // an rAF hop can wedge shut if scheduled while the tab is hidden.
+        scrub(p);
+        // While the section is pinned, vertical scroll reads as sideways card
+        // motion — hold the starfield still so there aren't two competing
+        // movements behind it.
+        if (window.phiStarfieldFreeze) window.phiStarfieldFreeze(p > 0);
+      }
+      window.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      vids.forEach(function (v) { v.addEventListener('loadedmetadata', update); });
+      update();
+    })();
+
+    // Smooth-scroll with header offset for in-page anchors (capture/model/infer).
+    document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+      anchor.addEventListener('click', function (e) {
+        var target = document.querySelector(this.getAttribute('href'));
+        if (!target) return;
+        e.preventDefault();
+        window.scrollTo({ top: target.getBoundingClientRect().top + window.pageYOffset - 190, behavior: 'smooth' });
+        history.pushState(null, null, this.getAttribute('href'));
+      });
+    });
+  </script>
+</body>
+
+</html>
