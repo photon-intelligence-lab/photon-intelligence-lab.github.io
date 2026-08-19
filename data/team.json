@@ -290,6 +290,37 @@
       "year": "2025 Fall",
       "bio": "I am a Computer Sciences PhD student in CV Lab at SBU, advised by Prof. DImitris Samaras. I also work with Prof. Akshat Dave. My research focus are Human Avatar Video Generation and 3D Vision, Reconstrucion, Physics based Vision.",
       "tagsByCategory": {}
+    },
+    {
+      "name": "Jai Nilesh Vasi",
+      "email": "jainilesh.vasi@stonybrook.edu",
+      "uid": "jainilesh.vasi",
+      "program": "MS",
+      "isCollaborating": false,
+      "tags": [
+        "computational-imaging",
+        "generative-ai",
+        "domain-adaptation",
+        "multimodal-perception",
+        "3D-reconstruction"
+      ],
+      "photo": "https://drive.usercontent.google.com/download?id=1QmhU3HG03i3Hf-vG1rR26OqcDF-iM9uh&export=view&authuser=0",
+      "website": "https://github.com/jai-1108",
+      "year": "2026 Summer",
+      "bio": "I am an MS Data Science student at Stony Brook University working with Prof. Akshat Dave in the Photon Intelligence Lab. My research interests include computational imaging, multimodal perception and 3D vision/reconstruction. I am currently exploring how vision and generative models can support robust 3D understanding from complex visual inputs.",
+      "tagsByCategory": {
+        "imaging": [
+          "computational-imaging"
+        ],
+        "machine-learning": [
+          "generative-ai",
+          "domain-adaptation",
+          "multimodal-perception"
+        ],
+        "application": [
+          "3D-reconstruction"
+        ]
+      }
     }
   ]
 }
