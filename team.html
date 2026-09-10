@@ -617,8 +617,12 @@ function dedupeByName(members) {
 //     lab, not enrolled as a core lab PhD student), but his sheet row just
 //     says "PhD" with no "- collaborator" suffix, so parseProgram() alone
 //     would misclassify him as a regular (non-collaborator) PhD student.
+//   - Bibhusa Rawal is likewise a collaborator (primary advisor is Dr.
+//     Himanshu Gupta, co-advised by Akshat Dave), but her sheet row just
+//     says "PhD" with no "- collaborator" suffix.
 const ROSTER_OVERRIDES = {
   'sai ram kasanagottu': (m) => { m.isCollaborating = true; },
+  'bibhusa rawal': (m) => { m.isCollaborating = true; },
 };
 
 function applyRosterOverrides(members) {
@@ -773,7 +777,12 @@ function mapRowsToMembers(dataRows, photoColKey) {
    we render immediately from a prebuilt snapshot (public/data/team.json,
    see scripts/refresh_team_snapshot.py) and only hit the live sheet, as a
    lightweight CSV export, in the background — re-rendering just once if
-   the content actually changed. */
+   the content actually changed.
+   TEMPORARILY DISABLED (flip back to true to re-enable): the live sheet
+   knows nothing about curated roster facts (isCollaborating overrides,
+   tags), so the background refresh was re-rendering over them with raw
+   values a moment after the correct snapshot rendered. */
+const LIVE_REFRESH_ENABLED = false;
 const SHEET_ID = '1_AWaXT6Pg1JpvUpT1CH3LVZLQY50Hq8oI7HIuFFpmFg';
 const SHEET_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv`;
 const SNAPSHOT_URL = 'data/team.json';
@@ -826,6 +835,8 @@ async function init() {
   } catch (err) {
     console.warn('Team snapshot unavailable, falling back to the live sheet:', err);
   }
+
+  if (!LIVE_REFRESH_ENABLED && renderedSomething) return;
 
   try {
     // Background refresh: re-render only if the live sheet's content

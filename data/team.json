@@ -321,6 +321,25 @@
           "3D-reconstruction"
         ]
       }
+    },
+    {
+      "name": "Bibhusa Rawal",
+      "email": "bibhusa.rawal@stonybrook.edu",
+      "uid": "bibhusa.rawal",
+      "program": "PhD",
+      "isCollaborating": true,
+      "tags": [
+        "quantum-computing"
+      ],
+      "photo": "https://drive.usercontent.google.com/download?id=1Q72iUK30D6pjwWvlZUii1IN9Y95t5K42&export=view&authuser=0",
+      "website": null,
+      "year": "2025 Spring",
+      "bio": "I am a Electrical Engineering PhD student, advised by Dr. Himanshu Gupta and co-advised by Dr. Akshat Dave. My research focus is Quantum Optics and Quantum Error Detection and Correction.",
+      "tagsByCategory": {
+        "application": [
+          "quantum-computing"
+        ]
+      }
     }
   ]
 }
